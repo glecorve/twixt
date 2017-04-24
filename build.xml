@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<!-- Build file for Apache Ant (http://ant.apache.org/) -->
+
+<project name="MaraTwixtPP" default="rebuild">
+
+  <property name="jar.name" value="MaraTwixtPP.jar"/>
+  <property name="main.class" value="Twixt"/>
+  <property name="lib.dir" value="lib"/>
+  <property name="source.dir" value="src"/>
+  <property name="resources.dir" value="resources"/>
+  <property name="classes.dir" value="build_ant"/>
+  <property name="manifest" value="Manifest.mf"/>
+  
+  <path id="class.path">
+	<fileset dir="lib">
+      <include name="**/*.jar" />
+	</fileset>
+  </path>
+
+<pathconvert property="manifest.classpath" pathsep=" ">
+  <path refid="class.path"/>
+  <mapper>
+    <chainedmapper>
+       <flattenmapper/>
+       <globmapper from="*.jar" to="lib/*.jar"/>
+    </chainedmapper>
+  </mapper>
+</pathconvert>
+  
+  <target name="clean">
+    <delete failonerror="false" includeEmptyDirs="true">
+      <fileset dir="${classes.dir}"/>
+    </delete>
+    <!--
+    <delete dir="${classes.dir}"/>
+    -->
+  </target>
+
+  <target name="compile">
+    <mkdir dir="${classes.dir}"/>
+
+    <javac srcdir="${source.dir}" destdir="${classes.dir}" optimize="yes" debug="no">
+      <include name="**/*.java"/>
+      <classpath refid="class.path" />
+      <compilerarg value="-Xlint:unchecked"/>
+    </javac>
+
+    <!-- Copy other files needed  -->
+    <copy todir="${classes.dir}">
+      <fileset dir="${resources.dir}">
+        <include name="**/*.json"/>
+        <include name="**/*.properties"/>
+        <include name="**/*.png"/>
+        <include name="**/*.gif"/>
+      </fileset>
+    </copy>
+
+  </target>
+
+  <target name="jar" depends="compile">
+    <manifest file="${manifest}">
+         <attribute name="Main-Class" value="${main.class}"/>
+         <attribute name="Class-Path" value="${manifest.classpath}"/>
+    </manifest>
+    <jar destfile="${jar.name}" manifest="${manifest}">
+      <fileset dir="${classes.dir}"/>
+      <!-- <fileset dir="${resources.dir}" /> -->
+    </jar>
+  </target>
+
+  <target name="build" depends="compile,jar">
+  </target>
+
+  <target name="rebuild" depends="clean,build">
+  </target>
+
+</project>
