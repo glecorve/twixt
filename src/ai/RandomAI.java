@@ -18,7 +18,7 @@ public class RandomAI extends AbstractAI {
 	 */
 	public RandomAI()
 	{
-			super("IA stupide");
+			super("Random AI");
 	}
 
 		
@@ -52,17 +52,16 @@ public class RandomAI extends AbstractAI {
 		{
 			point[0] = rand.nextInt(board.length);
 			point[1] = rand.nextInt(board.length);
-			// //System.out.println(" try ("+point[0] + ", " + point[1] + ")");
-		} while (LogicManager.isPossibleMove(board, point, mycolor));
+		} while (!LogicManager.isPossibleMove(board, point, mycolor));
 		
 
-		try
-		{
-			Thread.sleep((int)(Math.random() * (500)));
-		}
-		catch (InterruptedException ex)
-		{
-		}
+//		try
+//		{
+//			Thread.sleep((int)(Math.random() * (500)));
+//		}
+//		catch (InterruptedException ex)
+//		{
+//		}
 
 		return point;
     }

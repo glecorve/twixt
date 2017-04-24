@@ -64,7 +64,7 @@ public class Moves {
         return getPlayer(moveList.size());
     }
     
-    // color of the player who's turn it is
+    // color of the player whose turn it is
     public int getColorOnTurn() {
         if ((getTurn() == 0 && !swap) || (getTurn() == 1 && swap))
             return 1;

@@ -6,26 +6,31 @@ public class SaveMove
 {
   
 	private int[] p;
-	protected boolean isSet; /* Set flag */
 
 	/**
 	 *   Constructor
 	 */
 	public SaveMove()
 	{
-		isSet = false;
 		p = null;
 	}
 
 	/**
 	 *   Setter of the coordinates (used by the AI algorithm)
 	 *
-	 *   @param p the corrdinates
+	 *   @param p the coordinates
 	 */
 	public void setP(int[] p)
 	{
 		this.p = p;
-		isSet = true;
+	}
+	
+	/**
+	 *   Flush the save coordinates
+	 */
+	public void resetP()
+	{
+		this.p = null;
 	}
 
 	/**
@@ -37,17 +42,15 @@ public class SaveMove
 	public int[] getP() throws MoveNotSetException
 	{
 		/* No defined point */
-		if ((!isSet) || (p == null) || (p.length  != 2))
+		if (p == null || p.length  != 2)
 			throw new MoveNotSetException();
 
-
 		/* Return the point */
-		isSet = false;
 		return p;
 	}
 
 	@Override
 	public String toString() {
-		return "SaveMove [p=" + Arrays.toString(p) + ", isSet=" + isSet + "]";
+		return "SaveMove [p=" + Arrays.toString(p) + "]";
 	}
 }

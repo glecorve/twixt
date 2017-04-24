@@ -221,12 +221,7 @@ public class LogicManager {
 	}
 
 	public boolean isPossibleMove(int[] point) {
-		if (((moves.getColorOnTurn() == 1 && point[0] >= 0 && point[0] <= 23 && point[1] > 0 && point[1] < 23)
-				|| (moves.getColorOnTurn() == 2 && point[0] > 0 && point[0] < 23 && point[1] >= 0 && point[1] <= 23)
-				|| (point[0] == 0 && point[1] == 0 && moves.getSize() == 1)) && getBoard()[point[0]][point[1]] == 0)
-			return true;
-		else
-			return false;
+		return isPossibleMove(board, point, moves.getColorOnTurn());
 	}
 
 	public Moves getMoves() {

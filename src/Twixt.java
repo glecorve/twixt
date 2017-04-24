@@ -27,6 +27,17 @@ public class Twixt {
 		if (args.length == 0)
 		{
 			new GameFrame();
+//			Factory  f_ai = new Factory();
+//			AbstractAI ai[];
+//			ai = new AbstractAI[2];
+//			ai[0] = f_ai.getAI("RandomAI");
+//			ai[1] = f_ai.getAI("RandomAI");
+//
+//			LogicManager logicManager = new LogicManager();
+//			ConsoleDisplay dp = new ConsoleDisplay();
+//			RunningGame runningGame = new RunningGame(logicManager, dp);
+//			runningGame.setPlayers(ai);
+//			runningGame.start();  // FIXME: start
 		}
 		// Need to 2 arguments
 		else if (args.length == 2)

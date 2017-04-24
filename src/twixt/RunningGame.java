@@ -112,9 +112,9 @@ public class RunningGame extends Thread
 				/* Human player */
 				else
 				{
-//					do {
+					do {
 						cur_player.getMove(logicManager, save);
-//					} while(!logicManager.isPossibleMove(save.getP()));
+					} while(!logicManager.isPossibleMove(save.getP()));
 				}
 
 				
@@ -125,7 +125,7 @@ public class RunningGame extends Thread
 					throw new MoveNotSetException();
 				}
 
-				System.out.println("player " + cur_player.getName() + " played");
+				System.out.println("Player " + cur_player.getName() + " played (" + p[0] + "," + p[1] + ")");
 			}
 			catch (InterruptedException ex)
 			{
@@ -135,7 +135,8 @@ public class RunningGame extends Thread
 			/* Bad point => choose a random point */
 			catch (MoveNotSetException ex)
 			{
-				System.out.println("player " + cur_player.getName() + " haven't set any coordinate");
+				ex.printStackTrace();
+				System.out.println("Player " + cur_player.getName() + " haven't set any coordinate");
 				p = defaultAI.chooseMove(logicManager);
 				
 			}
@@ -145,7 +146,6 @@ public class RunningGame extends Thread
 				System.exit(-1);
 			}
 			
-			System.out.println("Chosen move:" + p[0] + "," + p[1]);
 			/* Add the point */
 			logicManager.add(p);
 			displayManager.addPoint(p);

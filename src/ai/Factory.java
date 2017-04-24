@@ -12,7 +12,7 @@ public class Factory
 		vect_ai = new Vector<String>();
 
 		/* List Classes and added them to the list */
-		vect_ai.add("StupidAI");
+		vect_ai.add("RandomAI");
 	}
 	
 	public AbstractAI getAI(String name)

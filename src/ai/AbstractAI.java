@@ -41,9 +41,7 @@ public abstract class AbstractAI implements Player {
 	 */
     public final void getMove(LogicManager logicManager, SaveMove saveMove) {
     	chosenMove = saveMove;
-    	int[] p = chooseMove(logicManager);
-    	System.out.println("chosen = " + p.toString());
-    	getChosenMove().setP(p);
+    	chosenMove.setP(chooseMove(logicManager));
     }
     
     
