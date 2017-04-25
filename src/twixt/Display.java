@@ -29,9 +29,10 @@ public interface Display
 	/**
 	 *  Method to display a win message
 	 *
-	 *  @param player the id of the winning player
+	 *  @param playerIndex the index of the winning player
+	 *  @param player the winning player
 	 */
-	public void wonMessage(int player);
+	public void wonMessage(int playerIndex, Player player);
 
 	/**
 	 *  Method to display a draw message

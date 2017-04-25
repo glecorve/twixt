@@ -32,6 +32,7 @@ public class Twixt {
 //			ai = new AbstractAI[2];
 //			ai[0] = f_ai.getAI("RandomAI");
 //			ai[1] = f_ai.getAI("RandomAI");
+////			ai[1] = f_ai.getAI("RandomConnectionAI");
 //
 //			LogicManager logicManager = new LogicManager();
 //			ConsoleDisplay dp = new ConsoleDisplay();

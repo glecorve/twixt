@@ -16,7 +16,7 @@ public class RunningGame extends Thread
 	private Player[] tabPlayers;
 	private AbstractAI defaultAI;
 	private int delay;
-	private final int DEFAULT_DELAY = 4000;
+	private final int DEFAULT_DELAY = 2000;
 	
 	/**
 	 *  Twixt game constructor (no AI)
@@ -73,6 +73,11 @@ public class RunningGame extends Thread
 		// FIXME: throws exception if bad index
 		tabPlayers[index] = player;
 	}
+	
+	private Player getPlayer(int index) {
+		// FIXME: throws exception if bad index
+		return tabPlayers[index]; 
+	}
 
 	/**
 	 *   Setter of the delay
@@ -107,7 +112,7 @@ public class RunningGame extends Thread
 					if (!executor.awaitTermination(delay, TimeUnit.MILLISECONDS))
 					{
 						executor.shutdownNow();
-					}				
+					}
 				}
 				/* Human player */
 				else
@@ -125,20 +130,18 @@ public class RunningGame extends Thread
 					throw new MoveNotSetException();
 				}
 
-				System.out.println("Player " + cur_player.getName() + " played (" + p[0] + "," + p[1] + ")");
+				System.out.println("[" + cur_player.getName() + "]\tplayed in position (" + p[0] + "," + p[1] + ")");
 			}
 			catch (InterruptedException ex)
 			{
-				ex.printStackTrace();
+				System.out.println("[" + cur_player.getName() + "\thas been abnormally interrupted");
 				System.exit(-1);
 			}
 			/* Bad point => choose a random point */
 			catch (MoveNotSetException ex)
 			{
-				ex.printStackTrace();
-				System.out.println("Player " + cur_player.getName() + " haven't set any coordinate");
+				System.out.println("[" + cur_player.getName() + "] \thas not set any coordinate");
 				p = defaultAI.chooseMove(logicManager);
-				
 			}
 			catch (Exception ex)
 			{
@@ -149,6 +152,9 @@ public class RunningGame extends Thread
 			/* Add the point */
 			logicManager.add(p);
 			displayManager.addPoint(p);
+			System.out.println();
+			System.out.println("Status = " + logicManager.getStatus());
+			System.out.println();
 		} while (logicManager.getStatus() == 0);
 
 		/* End of the game */
@@ -156,6 +162,8 @@ public class RunningGame extends Thread
 		{
 			displayManager.drawMessage();
 		}
-		displayManager.wonMessage(idx_cur_player);
+		else {
+			displayManager.wonMessage(idx_cur_player+1, getPlayer(idx_cur_player));
+		}
 	}
 }

@@ -232,10 +232,7 @@ public class BoardPanel extends JPanel
 	public synchronized void getMove(SaveMove save)
 	{
 		human_turn = true;
-		if (gameFrame.logicManager.getMoves().getSize() == 1) 
-			gameFrame.menuPanel.swapBtn.setEnabled(true);
-		else
-			gameFrame.menuPanel.swapBtn.setEnabled(false);
+
 		try
 		{
 			this.wait();

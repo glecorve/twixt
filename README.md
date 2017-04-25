@@ -1,6 +1,6 @@
 Twixt
 
-D'après le code original présent sur http://twixt.wikifoundry.com/page/Do+it+yourself .
+D'après le code original de Johannes Schwagereit présent sur http://twixt.wikifoundry.com/page/Do+it+yourself .
 
 Il s'agit d'un readme minimaliste à compléter !
 

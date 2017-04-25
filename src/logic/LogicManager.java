@@ -68,6 +68,17 @@ public class LogicManager {
 			}
 		}
 	}
+	
+	
+	/**
+	 * Play a given point (if possible)
+	 * 
+	 * @param point point where to add a peg
+	 */
+	public void play(int[] point) {
+		add(point);
+	}
+	
 
 	/**
 	 * Validity of the move checker
@@ -82,23 +93,8 @@ public class LogicManager {
 	public boolean isPossibleMove(int[] point, int color) {
 		return isPossibleMove(board, point, color);
 	}
-
-	/**
-	 * Validity of the move checker
-	 *
-	 * @param point
-	 *            coordinates of the move
-	 * @param playerIndex
-	 *            the index of the current player
-	 * @param swap
-	 *            swap flag
-	 *
-	 * @return true the point is valid or false if not
-	 */
-	public List<int[]> getAllPossibleMoves(int color) {
-		return getAllPossibleMoves(board, color);
-	}
-
+	
+	
 	/**
 	 * Static method to check the validity of a move
 	 *
@@ -108,8 +104,6 @@ public class LogicManager {
 	 *            coordinates of the move
 	 * @param playerIndex
 	 *            the index of the current player
-	 * @param swap
-	 *            swap flag
 	 *
 	 * @return true the point is valid or false if not
 	 */
@@ -118,29 +112,49 @@ public class LogicManager {
 				|| (color == 2 && point[0] > 0 && point[0] < 23 && point[1] >= 0 && point[1] <= 23))
 				&& board[point[0]][point[1]] == 0);
 	}
+	
 
 	/**
-	 * Validity of the move checker
-	 *
-	 * @param board
-	 *            the board
-	 * @param point
-	 *            coordinates of the move
+	 * List all possible moves for a given player
+	 * 
 	 * @param playerIndex
-	 *            the index of the current player
-	 * @param swap
-	 *            swap flag
-	 *
-	 * @return true the point is valid or false if not
+	 *            the index of the considered player
+	 * 
+	 * @return a list of points
 	 */
-	public static List<int[]> getAllPossibleMoves(int[][] board, int color) {
+	public List<int[]> getAllPossibleMoves(int playerIndex) {
+		return getAllPossibleMoves(board, playerIndex);
+	}
+
+	
+	/**
+	 * List all possible moves for the current player
+	 * 
+	 * @return a list of points
+	 */
+	public List<int[]> getAllPossibleMoves() {
+		return getAllPossibleMoves(board, moves.getCurrentColor());
+	}
+	
+
+	/**
+	 * Statically list all possible moves for a given board and a given player
+	 * 
+	 * @param board
+	 *            the index of the considered player
+	 * @param playerIndex
+	 *            the index of the considered player
+	 * 
+	 * @return a list of points
+	 */
+	public static List<int[]> getAllPossibleMoves(int[][] board, int playerIndex) {
 		List<int[]> validMoves = new LinkedList<int[]>();
 		int[] point = new int[2];
 		for (int i = 0; i < board.length; i++) {
 			point[0] = i;
 			for (int j = 0; j < board.length; j++) {
 				point[1] = j;
-				if (isPossibleMove(board, point, color)) {
+				if (isPossibleMove(board, point, playerIndex)) {
 					validMoves.add(point.clone());
 				}
 			}
@@ -148,7 +162,7 @@ public class LogicManager {
 		return validMoves;
 	}
 
-	private boolean isPossibleConnection(int[] point1, int[] point2, int color) {
+	public boolean isPossibleConnection(int[] point1, int[] point2, int color) {
 		for (int i = 0; i < getConnections(3 - color).getSize(); ++i) {
 			int[] c = getConnections(3 - color).getConnection(i);
 			if ((Math
@@ -189,6 +203,10 @@ public class LogicManager {
 			board[moves.getMove(i)[0]][moves.getMove(i)[1]] = moves.getColor(i);
 		}
 	}
+	
+	public int getCurrentColor() {
+		return moves.getCurrentColor();
+	}
 
 	public void back() {
 		if (canMoveBack()) {
@@ -221,7 +239,7 @@ public class LogicManager {
 	}
 
 	public boolean isPossibleMove(int[] point) {
-		return isPossibleMove(board, point, moves.getColorOnTurn());
+		return isPossibleMove(board, point, moves.getCurrentColor());
 	}
 
 	public Moves getMoves() {
@@ -279,7 +297,7 @@ public class LogicManager {
 						for (int k = 22; k <= 23; ++k) {
 							for (int l = 1; l < 23; ++l) {
 								if (b[k][l]) {
-									return 1; /* Player 2 wins */
+									return 1; /* Player 1 wins */
 								}
 							}
 						}
@@ -376,8 +394,9 @@ public class LogicManager {
 				}
 			}
 		}
-
-		return 0;
+		
+		if (is_draw) { return -1; }
+		else { return 0; }
 	}
 
 	/*

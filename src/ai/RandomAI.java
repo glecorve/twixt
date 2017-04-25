@@ -25,8 +25,8 @@ public class RandomAI extends AbstractAI {
 	@Override
     public int[] chooseMove(LogicManager logicManager) 
 	{
-		return chooseMove(logicManager.getMoves().getColorOnTurn(), logicManager.getBoard().clone(),
-				logicManager.cloneConnections(logicManager.getMoves().getColorOnTurn()),
+		return chooseMove(logicManager.getMoves().getCurrentColor(), logicManager.getBoard().clone(),
+				logicManager.cloneConnections(logicManager.getMoves().getCurrentColor()),
 				logicManager.cloneConnections(logicManager.getMoves().getColor()));
     }
 
@@ -37,11 +37,9 @@ public class RandomAI extends AbstractAI {
 	 *  @param board board (board[i][j] = 0 => free, board[i][j] = 1||2 => occupied)
 	 *  @param myConnections current player connections
 	 *  @param opConnections opposite player connections
-	 *  @param swap is swap possible flag?
 	 *  @return random valid chosen point
 	 */
-	public int[] chooseMove(int mycolor, int[][] board, Connections myConnections,
-						 Connections opConnections) 
+	public int[] chooseMove(int mycolor, int[][] board, Connections myConnections, Connections opConnections) 
 	{
         int[] point = new int[2];
         // point[0] represents the row you want to place your peg (values from 0 to 23)

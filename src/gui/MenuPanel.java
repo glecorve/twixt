@@ -23,7 +23,6 @@ public class MenuPanel extends JPanel{
     protected JButton forwardBtn;
     private JButton saveBtn;
     private JButton saveAsBtn;
-    protected JButton swapBtn;
     private NewGameDialog newGameDlg;
     protected JTextArea movesListTxt;
     protected JProgressBar aiProgress;
@@ -58,7 +57,6 @@ public class MenuPanel extends JPanel{
                     forwardBtn.setEnabled(false);
                     backBtn.setEnabled(false);
                     saveBtn.setEnabled(false);
-                    swapBtn.setEnabled(false);
                     if (!newGameDlg.ai2Chb.getSelectedItem().equals("")) {
                         players[1] = newGameDlg.f_ai.getAI((String) newGameDlg.ai2Chb.getSelectedItem());
                         p2Name = (String) newGameDlg.ai2Chb.getSelectedItem();
@@ -169,7 +167,6 @@ public class MenuPanel extends JPanel{
         backBtn.setEnabled(false);
         backBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                boolean b = gameFrame.logicManager.getMoves().getSwap();
                 if (!gameFrame.logicManager.canMoveBack()) {
                     backBtn.setEnabled(false);
                     return;
@@ -192,11 +189,9 @@ public class MenuPanel extends JPanel{
                     if (gameFrame.logicManager.canMoveBack()) backBtn.setEnabled(true);
                     else backBtn.setEnabled(false);
                 }
-                if (gameFrame.logicManager.getMoves().getSwap() != b) {
-                    Color c = p1Label.getForeground();
-                    p1Label.setForeground(p2Label.getForeground());
-                    p2Label.setForeground(c);
-                }
+                Color c = p1Label.getForeground();
+                p1Label.setForeground(p2Label.getForeground());
+                p2Label.setForeground(c);
                 calculateMovesList();                
             }
         });
@@ -212,7 +207,6 @@ public class MenuPanel extends JPanel{
                     forwardBtn.setEnabled(false);
                     return;
                 }
-                boolean b = gameFrame.logicManager.getMoves().getSwap();
                 gameFrame.logicManager.forward();
                 if ((players[0] != null) || (players[1] != null)) gameFrame.logicManager.forward();
                 if (gameFrame.logicManager.canMoveForward()) forwardBtn.setEnabled(true);
@@ -220,11 +214,9 @@ public class MenuPanel extends JPanel{
                 backBtn.setEnabled(true);
                 gameFrame.boardPanel.repaint();
                 calculateMovesList();
-                if (gameFrame.logicManager.getMoves().getSwap() != b) {
-                    Color c = p1Label.getForeground();
-                    p1Label.setForeground(p2Label.getForeground());
-                    p2Label.setForeground(c);
-                }
+                Color c = p1Label.getForeground();
+                p1Label.setForeground(p2Label.getForeground());
+                p2Label.setForeground(c);
             }
         });
         movePnl.add(forwardBtn);
@@ -240,18 +232,6 @@ public class MenuPanel extends JPanel{
         scp.setBackground(Constants.menuColor);
         moveListPnl.add(scp, BorderLayout.CENTER);
         pnl2.add(moveListPnl, BorderLayout.CENTER);
-        swapBtn = new JButton("Swap");
-        swapBtn.setBackground(Constants.btnColor);
-        swapBtn.setEnabled(false);
-        swapBtn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                p1Label.setForeground(Constants.p2Color);
-                p2Label.setForeground(Constants.p1Color);
-                swapBtn.setEnabled(false);
-                gameFrame.boardPanel.addPoint(new int[] {0, 0});
-            }
-        });
-        pnl.add(swapBtn, BorderLayout.SOUTH);
         JPanel aiPnl = new JPanel(new BorderLayout());
         aiPnl.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Constants.menuBorderColor, 2), "AI progress"));
         aiPnl.setBackground(Constants.menuColor);
@@ -281,11 +261,7 @@ public class MenuPanel extends JPanel{
         String s = "";
         for (int i = 0; i < gameFrame.logicManager.getMoves().getSize(); ++i) {
             int[] j = gameFrame.logicManager.getMoves().getMove(i);
-            if (j[0] == 0 && j[1] == 0) {
-                s += " 2. swap";
-            } else {
-                s += " " + (i+1) + ". " + ((char) (j[1] + 65)) + (j[0] + 1);
-            }
+            s += " " + (i+1) + ". " + ((char) (j[1] + 65)) + (j[0] + 1);
             s += "" + '\n' + '\r';
         }
         movesListTxt.setText(s);

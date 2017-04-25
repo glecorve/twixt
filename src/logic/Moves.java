@@ -5,19 +5,16 @@ import java.util.LinkedList;
 public class Moves {
     
     private LinkedList<int[]> moveList;
-    private boolean swap; // false = player 1 is white, top down; true = player1 is black, left right
     
     public Moves() {
         super();
         moveList = new LinkedList<int[]>();
-        swap = false;
     }
 
 	@SuppressWarnings("unchecked")
 	public Moves clone()
 	{
 		Moves m_clone = new Moves();
-		m_clone.swap = swap;
 		m_clone.moveList = (LinkedList<int[]>) moveList.clone();
 		return m_clone;
 	}
@@ -29,8 +26,6 @@ public class Moves {
     // add a move
     public void add(int[] point) {
         moveList.addLast(point);
-        if (point[0] == 0 && point[1] == 0)
-            swap = true;
     }
     
     // remove last move
@@ -45,7 +40,6 @@ public class Moves {
     }
     
     public int[] getMove() {
-//		System.out.println("taille = " + moveList.size());
         return moveList.getLast();
     }
     
@@ -65,21 +59,18 @@ public class Moves {
     }
     
     // color of the player whose turn it is
-    public int getColorOnTurn() {
-        if ((getTurn() == 0 && !swap) || (getTurn() == 1 && swap))
-            return 1;
-        else
-            return 2;
+    public int getCurrentColor() {
+        return getTurn()+1;
     }
     
-    // 0 = swap; 1 = white; 2 = black
+    // 1 = yellow; 2 = red
     public int getColor(int moveNumber) {
-        if (swap && moveNumber == 1)
-            return 0;
-        else if (moveNumber == 0 || (moveNumber % 2 == 0 && !swap) || (moveNumber % 2 == 1 && swap))
+        if (moveNumber % 2 == 0) {
             return 1;
-        else
+        }
+        else {
             return 2;
+        }
     }
     
     public int getColor() {
@@ -95,10 +86,6 @@ public class Moves {
             if (moveList.get(i).equals(point)) return false;
         }
         return true;
-    }
-    
-    public boolean getSwap() {
-        return swap;
     }
  
 }

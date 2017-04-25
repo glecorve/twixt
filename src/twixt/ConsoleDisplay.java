@@ -42,10 +42,10 @@ public class ConsoleDisplay implements Display
 	 *
 	 *  @param player the id of the winning player
 	 */
-	public void wonMessage(int player)
+	public void wonMessage(int playerIndex, Player player)
 	{
 		
-		System.out.println("==> vainqueur joueur "+ player);
+		System.out.println("==> " + player.getName() + " (player " + playerIndex + ") wins!");
 	}
 
 	/**
@@ -54,6 +54,6 @@ public class ConsoleDisplay implements Display
 	 */
 	public void drawMessage()
 	{
-		System.out.println("==> égalité\n");
+		System.out.println("==> Draw game.\n");
 	}
 }

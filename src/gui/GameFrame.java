@@ -64,13 +64,9 @@ public class GameFrame extends JFrame  implements Player, Display
         boardPanel.addPoint(p);
 	}
 
-	public void wonMessage(int player)
+	public void wonMessage(int playerIndex, Player player)
 	{
-		if (player == 0)
-			JOptionPane.showMessageDialog(this, "Congratulations! You've won " + menuPanel.p1Name + ".",
-										  Constants.gameTitle, JOptionPane.INFORMATION_MESSAGE);
-		else
-			JOptionPane.showMessageDialog(this, "Congratulations! You've won " + menuPanel.p2Name + ".",
+			JOptionPane.showMessageDialog(this, "<html><h1><b>" + player.getName() + " (player " + playerIndex + ")</b> wins!</h1></html>",
 										  Constants.gameTitle, JOptionPane.INFORMATION_MESSAGE);
 		boardPanel.setEnabled(false);
 	}
@@ -79,7 +75,7 @@ public class GameFrame extends JFrame  implements Player, Display
 
 	public void drawMessage()
 	{
-		JOptionPane.showMessageDialog(this, "Draw game!",
+		JOptionPane.showMessageDialog(this, "<html><h1>Draw game!</h1><html>",
 									  Constants.gameTitle, JOptionPane.INFORMATION_MESSAGE);
 		boardPanel.setEnabled(false);
 	}
