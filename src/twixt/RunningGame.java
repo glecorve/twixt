@@ -153,8 +153,6 @@ public class RunningGame extends Thread
 			logicManager.add(p);
 			displayManager.addPoint(p);
 			System.out.println();
-			System.out.println("Status = " + logicManager.getStatus());
-			System.out.println();
 		} while (logicManager.getStatus() == 0);
 
 		/* End of the game */
