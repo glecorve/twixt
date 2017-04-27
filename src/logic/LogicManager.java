@@ -59,7 +59,8 @@ public class LogicManager {
 					if (j == 0)
 						++j;
 					if (point[0] + i <= 23 && point[0] + i >= 0 && point[1] + j <= 23 && point[1] + j >= 0
-							&& Math.abs(i) + Math.abs(j) == 3 && board[point[0] + i][point[1] + j] == moves.getColor()
+			                && board[point[0]][point[1]] == moves.getColor()
+			        		&& board[point[0] + i][point[1] + j] == moves.getColor()
 							&& isPossibleConnection(point, new int[] { point[0] + i, point[1] + j },
 									moves.getColor())) {
 						getConnections(moves.getColor()).add(point, new int[] { point[0] + i, point[1] + j });
@@ -162,28 +163,65 @@ public class LogicManager {
 		return validMoves;
 	}
 
-	public boolean isPossibleConnection(int[] point1, int[] point2, int color) {
-		for (int i = 0; i < getConnections(3 - color).getSize(); ++i) {
-			int[] c = getConnections(3 - color).getConnection(i);
-			if ((Math
-					.signum(point1[1]
-							- (point1[0] - c[0])
-									* (1.0 * (c[3] - c[1]) / (c[2] - c[0]))
-							- c[1]) != Math
-									.signum(point2[1]
-											- (point2[0] - c[0])
-													* (1.0 * (c[3] - c[1]) / (c[2] - c[0]))
-											- c[1]))
-					&& (Math.signum(
-							c[1] - (c[0] - point1[0]) * (1.0 * (point2[1] - point1[1]) / (point2[0] - point1[0]))
-									- point1[1]) != Math
-											.signum(c[3]
-													- (c[2] - point1[0])
-															* (1.0 * (point2[1] - point1[1]) / (point2[0] - point1[0]))
-													- point1[1])))
-				return false;
+//	public boolean isPossibleConnection(int[] point1, int[] point2, int color) {
+//		for (int i = 0; i < getConnections(3 - color).getSize(); ++i) {
+//			int[] c = getConnections(3 - color).getConnection(i);
+//			if ((Math
+//					.signum(point1[1]
+//							- (point1[0] - c[0])
+//									* (1.0 * (c[3] - c[1]) / (c[2] - c[0]))
+//							- c[1]) != Math
+//									.signum(point2[1]
+//											- (point2[0] - c[0])
+//													* (1.0 * (c[3] - c[1]) / (c[2] - c[0]))
+//											- c[1]))
+//					&& (Math.signum(
+//							c[1] - (c[0] - point1[0]) * (1.0 * (point2[1] - point1[1]) / (point2[0] - point1[0]))
+//									- point1[1]) != Math
+//											.signum(c[3]
+//													- (c[2] - point1[0])
+//															* (1.0 * (point2[1] - point1[1]) / (point2[0] - point1[0]))
+//													- point1[1])))
+//				return false;
+//		}
+//		return true;
+//	}
+
+//	double[] middle = {(point1[0] + point2[0])/2.0, (point1[1] + point2[1])/2.0}; 
+//	for (int i = 0; i < getConnections(color).getSize(); ++i) {
+//	int[] c = getConnections(color).getConnection(i);
+//	double[] m = {(c[0] + c[2])/2.0, (c[1] + c[3])/2.0};
+	
+	/**
+	 * Test if a bridge between two given points would cross another bridge of a given player
+	 * @param point1 start point of the bridge
+ 	 * @param point2 end point of the bridge
+	 * @param color color of bridges to examine
+	 * @return true if the bridge would cross another one of the given color, false otherwise
+	 */
+	public boolean isCrossingConnection(int[] point1, int[] point2, int color) {
+		for (int i = 0; i < getConnections(color).getSize(); ++i) {
+			int[] c = getConnections(color).getConnection(i);
+			int d11 = (int)
+					Math.signum(point1[1] - (point1[0] - c[0]) * (1.0 * (c[3] - c[1]) / (c[2] - c[0])) - c[1]);
+			int d12 = (int)
+					Math.signum(point2[1] - (point2[0] - c[0]) * (1.0 * (c[3] - c[1]) / (c[2] - c[0])) - c[1]);
+			int d21 = (int)
+					Math.signum(c[1] - (c[0] - point1[0]) * (1.0 * (point2[1] - point1[1]) / (point2[0] - point1[0])) - point1[1]);
+			int d22 = (int)
+					Math.signum(c[3] - (c[2] - point1[0]) * (1.0 * (point2[1] - point1[1]) / (point2[0] - point1[0])) - point1[1]);
+			
+			if (Math.abs(d11 - d12) == 2 && Math.abs(d21 - d22) == 2) {
+				return true;
+			}
 		}
-		return true;
+		return false;
+	}
+	
+	public boolean isPossibleConnection(int[] point1, int[] point2, int color) {
+		return (Math.abs(point1[0] - point2[0]) + Math.abs(point1[1] - point2[1]) == 3
+        		&& !isCrossingConnection(point1, point2, color)
+				&& !isCrossingConnection(point1, point2, 3 - color));
 	}
 
 	private void remove() {
