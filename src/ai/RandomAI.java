@@ -42,8 +42,8 @@ public class RandomAI extends AbstractAI {
 	public int[] chooseMove(int mycolor, int[][] board, Connections myConnections, Connections opConnections) 
 	{
         int[] point = new int[2];
-        // point[0] represents the row you want to place your peg (values from 0 to 23)
-        // point[1] represents the column you want to place your peg (values from 0 to 23)
+        // point[0] represents the row you want to place your peg (values from 0 to getBoardSize()-1)
+        // point[1] represents the column you want to place your peg (values from 0 to getBoardSize()-1)
         Random rand = new Random();
         
 		do

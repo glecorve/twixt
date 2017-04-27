@@ -22,11 +22,13 @@ public class Twixt {
 	 */
     public static void main(String[] args)
 	{
+    	
+    	int boardSize = 12;
 
 		// No argument => GUI
 		if (args.length == 0)
 		{
-			new GameFrame();
+			GameFrame g = new GameFrame(boardSize);
 //			Factory  f_ai = new Factory();
 //			AbstractAI ai[];
 //			ai = new AbstractAI[2];
@@ -49,7 +51,7 @@ public class Twixt {
 			ai[0] = f_ai.getAI((String) args[0]);
 			ai[1] = f_ai.getAI((String) args[1]);
 
-			LogicManager logicManager = new LogicManager();
+			LogicManager logicManager = new LogicManager(boardSize);
 			ConsoleDisplay dp = new ConsoleDisplay();
 			RunningGame runningGame = new RunningGame(logicManager, dp);
 			runningGame.setPlayers(ai);

@@ -9,14 +9,24 @@ public class LogicManager {
 	private Moves movesBack;
 	private Connections connectionsWhite;
 	private Connections connectionsBlack;
+	private static int boardSize = 24;
+	private static boolean started = false;
 	private int[][] board;
 	private boolean fw;
 
+	
 	public LogicManager() {
 		super();
 		reinit();
 	}
+	
+	public LogicManager(int size) {
+		super();
+		setBoardSize(size);
+		reinit();
+	}
 
+	
 	public LogicManager clone() {
 		LogicManager l_clone = new LogicManager();
 		l_clone.moves = moves.clone();
@@ -29,19 +39,22 @@ public class LogicManager {
 		return l_clone;
 	}
 
+	
 	public void reinit() {
 		moves = new Moves();
 		movesBack = new Moves();
 		connectionsWhite = new Connections();
 		connectionsBlack = new Connections();
-		board = new int[24][24];
+		board = new int[getBoardSize()][getBoardSize()];
 		fw = false;
 	}
 
+	
 	public void add(int row, int col) {
 		add(new int[] { row, col });
 	}
 
+	
 	public void add(int[] point) {
 		if (isPossibleMove(point)) {
 			moves.add(point[0], point[1]);
@@ -58,7 +71,7 @@ public class LogicManager {
 				for (int j = -2; j <= 2; ++j) {
 					if (j == 0)
 						++j;
-					if (point[0] + i <= 23 && point[0] + i >= 0 && point[1] + j <= 23 && point[1] + j >= 0
+					if (point[0] + i <= getBoardSize()-1 && point[0] + i >= 0 && point[1] + j <= getBoardSize()-1 && point[1] + j >= 0
 			                && board[point[0]][point[1]] == moves.getColor()
 			        		&& board[point[0] + i][point[1] + j] == moves.getColor()
 							&& isPossibleConnection(point, new int[] { point[0] + i, point[1] + j },
@@ -68,6 +81,7 @@ public class LogicManager {
 				}
 			}
 		}
+		started = true;
 	}
 	
 	
@@ -109,8 +123,8 @@ public class LogicManager {
 	 * @return true the point is valid or false if not
 	 */
 	public static boolean isPossibleMove(int[][] board, int[] point, int color) {
-		return (((color == 1 && point[0] >= 0 && point[0] <= 23 && point[1] > 0 && point[1] < 23)
-				|| (color == 2 && point[0] > 0 && point[0] < 23 && point[1] >= 0 && point[1] <= 23))
+		return (((color == 1 && point[0] >= 0 && point[0] <= board.length-1 && point[1] > 0 && point[1] < board.length-1)
+				|| (color == 2 && point[0] > 0 && point[0] < board.length-1 && point[1] >= 0 && point[1] <= board.length-1))
 				&& board[point[0]][point[1]] == 0);
 	}
 	
@@ -192,6 +206,7 @@ public class LogicManager {
 //	int[] c = getConnections(color).getConnection(i);
 //	double[] m = {(c[0] + c[2])/2.0, (c[1] + c[3])/2.0};
 	
+	
 	/**
 	 * Test if a bridge between two given points would cross another bridge of a given player
 	 * @param point1 start point of the bridge
@@ -218,20 +233,23 @@ public class LogicManager {
 		return false;
 	}
 	
+	
 	public boolean isPossibleConnection(int[] point1, int[] point2, int color) {
 		return (Math.abs(point1[0] - point2[0]) + Math.abs(point1[1] - point2[1]) == 3
         		&& !isCrossingConnection(point1, point2, color)
 				&& !isCrossingConnection(point1, point2, 3 - color));
 	}
 
+	
 	private void remove() {
 		getConnections(moves.getColor()).remove(moves.getMove());
 		moves.remove();
 		createBoard();
 	}
 
+	
 	private void createBoard() {
-		board = new int[24][24];
+		board = new int[getBoardSize()][getBoardSize()];
 		for (int i = 0; i < moves.getSize(); ++i) {
 			// if (moves.getColor(i) > 0 )
 			// {
@@ -242,10 +260,12 @@ public class LogicManager {
 		}
 	}
 	
+	
 	public int getCurrentColor() {
 		return moves.getCurrentColor();
 	}
 
+	
 	public void back() {
 		if (canMoveBack()) {
 			movesBack.add(moves.getMove());
@@ -253,6 +273,7 @@ public class LogicManager {
 		}
 	}
 
+	
 	public boolean canMoveBack() {
 		if (moves.getSize() > 0)
 			return true;
@@ -260,6 +281,7 @@ public class LogicManager {
 			return false;
 	}
 
+	
 	public void forward() {
 		if (canMoveForward()) {
 			fw = true;
@@ -269,6 +291,7 @@ public class LogicManager {
 		}
 	}
 
+	
 	public boolean canMoveForward() {
 		if (movesBack.getSize() > 0)
 			return true;
@@ -276,22 +299,27 @@ public class LogicManager {
 			return false;
 	}
 
+	
 	public boolean isPossibleMove(int[] point) {
 		return isPossibleMove(board, point, moves.getCurrentColor());
 	}
 
+	
 	public Moves getMoves() {
 		return moves;
 	}
 
+	
 	public Connections getWhiteConnections() {
 		return connectionsWhite;
 	}
 
+	
 	public Connections getBlackConnections() {
 		return connectionsBlack;
 	}
 
+	
 	public Connections getConnections(int color) {
 		if (color == 1)
 			return connectionsWhite;
@@ -299,6 +327,7 @@ public class LogicManager {
 			return connectionsBlack;
 	}
 
+	
 	public Connections cloneConnections(int color) {
 		if (color == 1)
 			return connectionsWhite.clone();
@@ -306,14 +335,24 @@ public class LogicManager {
 			return connectionsBlack.clone();
 	}
 
+	
 	public int[][] getBoard() {
 		return board;
 	}
 	
-	public int getBoardSize() {
-		return getBoard().length;
+	
+	public static int getBoardSize() {
+		return boardSize;
+	}
+	
+	public void setBoardSize(int newSize) {
+		if (!started) {
+			boardSize = newSize;
+			reinit();
+		}
 	}
 
+	
 	/**
 	 * get the game status
 	 *
@@ -324,16 +363,16 @@ public class LogicManager {
 
 		// look if theres a connection from last move to both boarders.
 		int[] point = moves.getMove();
-		boolean[][] b = new boolean[24][24];
+		boolean[][] b = new boolean[getBoardSize()][getBoardSize()];
 
 		// Last move done by player one
 		if (board[point[0]][point[1]] == 1) {
 			b = conCalc(b, point[0], point[1], connectionsWhite);
 			for (int i = 0; i < 2; ++i) {
-				for (int j = 1; j < 23; ++j) {
+				for (int j = 1; j < getBoardSize()-1; ++j) {
 					if (b[i][j]) {
-						for (int k = 22; k <= 23; ++k) {
-							for (int l = 1; l < 23; ++l) {
+						for (int k = getBoardSize()-2; k <= getBoardSize()-1; ++k) {
+							for (int l = 1; l < getBoardSize()-1; ++l) {
 								if (b[k][l]) {
 									return 1; /* Player 1 wins */
 								}
@@ -349,11 +388,11 @@ public class LogicManager {
 		// Last move done by player two
 		else {
 			b = conCalc(b, point[0], point[1], connectionsBlack);
-			for (int i = 1; i < 23; ++i) {
+			for (int i = 1; i < getBoardSize()-1; ++i) {
 				for (int j = 0; j < 2; ++j) {
 					if (b[i][j]) {
-						for (int k = 1; k < 23; ++k) {
-							for (int l = 22; l <= 23; ++l) {
+						for (int k = 1; k < getBoardSize()-1; ++k) {
+							for (int l = getBoardSize()-2; l <= getBoardSize()-1; ++l) {
 								if (b[k][l]) {
 									return 2; /* Player 2 wins */
 								}
@@ -370,9 +409,9 @@ public class LogicManager {
 		/* Check draw */
 		boolean is_draw = true;
 		int i = 1;
-		while ((i < 22) && is_draw) {
+		while ((i < getBoardSize()-2) && is_draw) {
 			int j = 1;
-			while ((j < 22) && is_draw) {
+			while ((j < getBoardSize()-2) && is_draw) {
 				/* Free case => possible move! */
 				if (board[i][j] == 0) {
 					is_draw = false;
@@ -391,7 +430,7 @@ public class LogicManager {
 			if (next_player == 1) {
 				i = 0;
 				int j = 1;
-				while ((j < 22) && is_draw) {
+				while ((j < getBoardSize()-2) && is_draw) {
 					/* Free case => possible move! */
 					if (board[i][j] == 0) {
 						is_draw = false;
@@ -399,9 +438,9 @@ public class LogicManager {
 					j++;
 				}
 
-				i = 23;
+				i = getBoardSize()-1;
 				j = 1;
-				while ((j < 22) && is_draw) {
+				while ((j < getBoardSize()-2) && is_draw) {
 					/* Free case => possible move! */
 					if (board[i][j] == 0) {
 						is_draw = false;
@@ -413,7 +452,7 @@ public class LogicManager {
 			else {
 				int j = 0;
 				i = 1;
-				while ((i < 22) && is_draw) {
+				while ((i < getBoardSize()-2) && is_draw) {
 					/* Free case => possible move! */
 					if (board[i][j] == 0) {
 						is_draw = false;
@@ -421,9 +460,9 @@ public class LogicManager {
 					i++;
 				}
 
-				j = 23;
+				j = getBoardSize()-1;
 				i = 1;
-				while ((i < 22) && is_draw) {
+				while ((i < getBoardSize()-2) && is_draw) {
 					/* Free case => possible move! */
 					if (board[i][j] == 0) {
 						is_draw = false;

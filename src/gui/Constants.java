@@ -3,13 +3,16 @@ package gui;
 import java.awt.Color;
 import java.awt.Dimension;
 
+import logic.LogicManager;
+
 public class Constants {
     
     // don't change
-    public static final String gameTitle = "MaraTwixt P&P";    
-    public static final Dimension boardSize = new Dimension(700, 700);
+    public static final String gameTitle = "MaraTwixt AI";
     public static final int offSet = 50;
-    public static final int cell = (boardSize.width - 2 * offSet) / 24;
+    public static final Dimension boardSize = new Dimension(25*LogicManager.getBoardSize() + 2 * offSet,
+                                                            25*LogicManager.getBoardSize() + 2 * offSet);
+    public static final int cell = (boardSize.width - 2 * offSet) / LogicManager.getBoardSize();
 
     // here you can change the width of a hole and a peg
     public static final int hole = 6;
@@ -24,7 +27,7 @@ public class Constants {
     public static final Color p2boarder = new Color(255, 180, 180);    
     public static final Color holeColor = new Color(100, 100, 100);
     public static final Color textColor = new Color(0, 0, 0);
-    public static final Color boarderColor = new Color(233, 240, 233);
+    public static final Color boarderColor = new Color(233, 230, 233);
     
     public static final Color menuColor = new Color(190, 190, 200);
     public static final Color menuBorderColor = new Color(50, 50, 50);

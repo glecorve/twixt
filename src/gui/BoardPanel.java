@@ -5,6 +5,8 @@ import java.awt.event.*;
 import twixt.SaveMove;
 import javax.swing.JPanel;
 
+import logic.LogicManager;
+
 /**
  *  The JPanel where the board is painted
  *
@@ -100,17 +102,17 @@ public class BoardPanel extends JPanel
         g.drawRect(1, 1, Constants.boardSize.width - 2, Constants.boardSize.height - 2);
         g.drawRect(3, 3, Constants.boardSize.width - 6, Constants.boardSize.height - 6);
         
-        for (int i = 0; i < 24; ++i) {
+        for (int i = 0; i < LogicManager.getBoardSize(); ++i) {
             char[] c = new char[] {(char) ('A' + i)};
             g.drawChars(c, 0, 1, Constants.offSet + 8 + i * Constants.cell, 30);
             g.drawChars(c, 0, 1, Constants.offSet + 8 + i * Constants.cell, 30 + Constants.boardSize.height - Constants.offSet);
         }
-        for (int i = 0; i < 9; ++i) {
+        for (int i = 0; i < Math.min(LogicManager.getBoardSize(), 9); ++i) {
             char[] c = new char[] {(char) ('1' + i)};
-            g.drawChars(c, 0, 1, 23, Constants.offSet + 17 + i * Constants.cell);
+            g.drawChars(c, 0, 1, LogicManager.getBoardSize()-1, Constants.offSet + 17 + i * Constants.cell);
             g.drawChars(c, 0, 1, 21 + Constants.boardSize.width - Constants.offSet, Constants.offSet + 17 + i * Constants.cell);
         }
-        for (int i = 9; i < 24; ++i) {
+        for (int i = 9; i < LogicManager.getBoardSize(); ++i) {
             char[] c = new char[] {(char) ('1' + i / 19) ,(char) ('0' + (i + 1) % 10)};
             g.drawChars(c, 0, 2, 21, Constants.offSet + 17 + i * Constants.cell);
             g.drawChars(c, 0, 2, 17 + Constants.boardSize.width - Constants.offSet, Constants.offSet + 17 + i * Constants.cell);
@@ -169,10 +171,10 @@ public class BoardPanel extends JPanel
                 Constants.boardSize.height - Constants.offSet - Constants.cell * 3 / 2}, 8);
 				
         int board[][] = gameFrame.logicManager.getBoard();
-        for(int i = 0; i < 24; ++i) {
-            for (int j = 0; j < 24; ++j) {
+        for(int i = 0; i < LogicManager.getBoardSize(); ++i) {
+            for (int j = 0; j < LogicManager.getBoardSize(); ++j) {
 //				System.out.print(board[i][j] + "\t");
-                if (i % 23 != 0 || j % 23 != 0) {
+                if (i % LogicManager.getBoardSize()-1 != 0 || j % LogicManager.getBoardSize()-1 != 0) {
                     if (board[i][j] == 0) {
                         g.setColor(Constants.holeColor);
                         g.fillOval(Constants.offSet + (Constants.cell - Constants.hole) / 2 + j * Constants.cell, Constants.offSet + (Constants.cell - Constants.hole) / 2 + i * Constants.cell, Constants.hole, Constants.hole);

@@ -19,34 +19,46 @@ public class GameFrame extends JFrame  implements Player, Display
     protected MenuPanel menuPanel;
     protected RunningGame runningGame;
 	
+    
     public GameFrame()
 	{
         super();
-
 		// Init model
 		logicManager = new LogicManager();
-		
-        setTitle(Constants.gameTitle);
-        setBackground(Constants.menuColor);
-        setLayout(new BorderLayout());
-        boardPanel = new BoardPanel(this);
-        boardPanel.setEnabled(false);
-        menuPanel = new MenuPanel(this);      
-        add(boardPanel, BorderLayout.CENTER);
-        add(menuPanel, BorderLayout.EAST);
-        pack();
-        setResizable(false);
-        addWindowListener(new WindowAdapter(){
-            public void windowClosing(WindowEvent e) {
-                System.exit(1);
-            }
-        });
-        setLocation((int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth() - getWidth()) / 2,
+        init();
+    }
+    
+    public GameFrame(int size)
+	{
+        super();
+		// Init model
+		logicManager = new LogicManager(size);
+        init();
+    }
+    
+    
+    private void init() {		
+		setTitle(Constants.gameTitle);
+		setBackground(Constants.menuColor);
+		setLayout(new BorderLayout());
+		boardPanel = new BoardPanel(this);
+		boardPanel.setEnabled(false);
+		menuPanel = new MenuPanel(this);      
+		add(boardPanel, BorderLayout.CENTER);
+		add(menuPanel, BorderLayout.EAST);
+		pack();
+		setResizable(false);
+		addWindowListener(new WindowAdapter(){
+		    public void windowClosing(WindowEvent e) {
+		        System.exit(1);
+		    }
+		});
+		setLocation((int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth() - getWidth()) / 2,
 					(int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight() - getHeight()) / 2) ;
-        setVisible(true);
-		
+		setVisible(true);
     }
 
+    
 	public void prepareAICall()
 	{
         boardPanel.setEnabled(false);
