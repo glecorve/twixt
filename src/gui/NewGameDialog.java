@@ -19,7 +19,7 @@ public class NewGameDialog extends JDialog{
 	
 	Factory f_ai;
 
-    public NewGameDialog() {
+    public NewGameDialog(String playerName1, String playerName2) {
         super();
 		
 
@@ -39,6 +39,7 @@ public class NewGameDialog extends JDialog{
         pnl2.add(new JLabel(" AI: "));
         pnl.add(pnl2, BorderLayout.WEST);
         player1Tfd = new JTextField(10);
+        player1Tfd.setText(playerName1);
         pnl2 = new JPanel(new GridLayout(2,1,0,0));
         pnl2.setBackground(Constants.p1boarder);
         pnl2.add(player1Tfd);
@@ -49,6 +50,20 @@ public class NewGameDialog extends JDialog{
 		ia.addAll(f_ai.list_AI());
         ai1Chb = new JComboBox<String>(ia);
         ai1Chb.setBackground(Constants.p1boarder);
+        ai1Chb.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String name = (String) ai1Chb.getSelectedItem();
+				if (name.equals("")) {
+					name = "A";
+				}
+				else if (name.equals(player2Tfd.getText())) {
+        			player2Tfd.setText(name + " 2");
+        			name += " 1";
+        		}
+				player1Tfd.setText(name);				
+			}
+		});
         pnl2.add(ai1Chb);
         pnl.add(pnl2, BorderLayout.EAST);  
         p.add(pnl);
@@ -61,6 +76,7 @@ public class NewGameDialog extends JDialog{
         pnl2.add(new JLabel(" AI: "));
         pnl.add(pnl2, BorderLayout.WEST);
         player2Tfd = new JTextField(10);
+        player2Tfd.setText(playerName2);
         pnl2 = new JPanel(new GridLayout(2,1,0,0));
         pnl2.setBackground(Constants.p2boarder);
         pnl2.add(player2Tfd);
@@ -69,6 +85,20 @@ public class NewGameDialog extends JDialog{
         ai2Chb = new JComboBox<String>(ia);
         ai2Chb.setBackground(Constants.p2boarder);
         ai2Chb.setSelectedIndex(0);
+        ai2Chb.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String name = (String) ai2Chb.getSelectedItem();
+				if (name.equals("")) {
+					name = "B";
+				}
+				else if (name.equals(player1Tfd.getText())) {
+        			player1Tfd.setText(name + " 1");
+        			name += " 2";
+        		}
+				player2Tfd.setText(name);				
+			}
+		});
         pnl2.add(ai2Chb);
         pnl.add(pnl2, BorderLayout.EAST);  
         p.add(pnl);     

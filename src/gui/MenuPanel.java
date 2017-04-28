@@ -36,8 +36,10 @@ public class MenuPanel extends JPanel{
     
     public MenuPanel(GameFrame gf)
 	{
-        newGameDlg = new NewGameDialog();
         gameFrame = gf;
+        p1Name = "A";
+        p2Name = "B";
+        newGameDlg = new NewGameDialog(p1Name, p2Name);
         setLayout(new BorderLayout());
         JPanel gamePanel = new JPanel(new GridLayout(5,1,0,0));
         gamePanel.setBackground(Constants.menuColor);
@@ -57,27 +59,33 @@ public class MenuPanel extends JPanel{
                     forwardBtn.setEnabled(false);
                     backBtn.setEnabled(false);
                     saveBtn.setEnabled(false);
+                    
+                    // Player 2
                     if (!newGameDlg.ai2Chb.getSelectedItem().equals("")) {
                         players[1] = newGameDlg.f_ai.getAI((String) newGameDlg.ai2Chb.getSelectedItem());
-                        p2Name = (String) newGameDlg.ai2Chb.getSelectedItem();
+                        p2Name = newGameDlg.player2Tfd.getText();
+                        players[1].setName(p2Name);
                     } else {
                         players[1] = gameFrame;
                         p2Name = newGameDlg.player2Tfd.getText().trim();
                         if (p2Name.length() > 12) p2Name = p2Name.substring(0, 12);
                     }
                     p2Label.setText(p2Name);
+                    
+                    // Player 1
                     if (!newGameDlg.ai1Chb.getSelectedItem().equals("")) {
                         players[0] = newGameDlg.f_ai.getAI((String) newGameDlg.ai1Chb.getSelectedItem());
-                        p1Name = (String) newGameDlg.ai1Chb.getSelectedItem();
-                        p1Label.setText(p1Name);                   
+                        p1Name = newGameDlg.player1Tfd.getText();
+                        players[0].setName(p1Name);
                     } else {
                         players[0] = gameFrame;
                         p1Name = newGameDlg.player1Tfd.getText().trim();
                         if (p1Name.length() > 12) p1Name = p1Name.substring(0, 12);
-                        p1Label.setText(p1Name);
                         gameFrame.boardPanel.setEnabled(true);
                         saveAsBtn.setEnabled(true);
                     }
+                    p1Label.setText(p1Name);
+                    
 					run();
                 }
             }
@@ -145,8 +153,8 @@ public class MenuPanel extends JPanel{
         JPanel playersPnl = new JPanel(new GridLayout(2, 1, 0, 0));
         playersPnl.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Constants.menuBorderColor, 2), "Players"));
         playersPnl.setBackground(Constants.menuColor);
-        p1Label = new JLabel(" ");
-        p2Label = new JLabel(" ");
+        p1Label = new JLabel(p1Name);
+        p2Label = new JLabel(p2Name);
         p1Label.setHorizontalAlignment(JLabel.CENTER);
         p2Label.setHorizontalAlignment(JLabel.CENTER);
         p1Label.setForeground(Constants.p1Color);
@@ -325,6 +333,17 @@ public class MenuPanel extends JPanel{
 		RunningGame runningGame = new RunningGame(gameFrame.logicManager, gameFrame);
 		runningGame.setPlayers(players);
 		runningGame.start();
+	}
+
+	public void switchPlayers() {
+		String tmpName = p1Name;
+		p1Name = p2Name;
+		p2Name = tmpName;
+		
+		p1Label.setText(p1Name);
+		p2Label.setText(p2Name);
+		
+		repaint();
 	}
     
 }

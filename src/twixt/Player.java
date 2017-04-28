@@ -13,4 +13,6 @@ public interface Player
     public void getMove(LogicManager logicManager, SaveMove save);
 
 	public String getName();
+	
+	public void setName(String newName);
 }

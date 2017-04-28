@@ -1,7 +1,7 @@
 package twixt;
 
 /**
- * The interface if displaying informations
+ * The interface for displaying information
  *
  */
 public interface Display
@@ -25,18 +25,25 @@ public interface Display
 	 *  @param p the tower's coordinates
 	 */
 	public void addPoint(int[] p);
+	
+	/**
+	 * Switch players
+	 */
+	public void switchPlayers();
 
 	/**
 	 *  Method to display a win message
 	 *
 	 *  @param playerIndex the index of the winning player
 	 *  @param player the winning player
+	 * @return TODO
 	 */
-	public void wonMessage(int playerIndex, Player player);
+	public int wonMessage(int playerIndex, Player player);
 
 	/**
 	 *  Method to display a draw message
+	 * @return TODO
 	 *
 	 */
-	public void drawMessage();
+	public int drawMessage();
 }

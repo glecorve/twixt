@@ -37,23 +37,30 @@ public class ConsoleDisplay implements Display
 		System.out.println("Ajout du point (" + p[0] + ", " + p[1] + ")");
 	}
 
+	@Override
+	public void switchPlayers() {
+		
+	}
+
 	/**
 	 *  Method to display a win message
 	 *
 	 *  @param player the id of the winning player
 	 */
-	public void wonMessage(int playerIndex, Player player)
+	public int wonMessage(int playerIndex, Player player)
 	{
 		
 		System.out.println("==> " + player.getName() + " (player " + playerIndex + ") wins!");
+		return 2; // Quit
 	}
 
 	/**
 	 *  Method to display a draw message
 	 *
 	 */
-	public void drawMessage()
+	public int drawMessage()
 	{
 		System.out.println("==> Draw game.\n");
+		return 2; // Quit
 	}
 }

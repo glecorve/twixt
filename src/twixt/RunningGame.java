@@ -52,6 +52,7 @@ public class RunningGame extends Thread
 	public void setPoint(int[] p)
 	{
 	}
+	
 	/**
 	 *   Setter of all TwixtPlayers
 	 *
@@ -59,6 +60,18 @@ public class RunningGame extends Thread
 	 */
 	public void setPlayers(Player[] tabPlayers)
 	{
+		this.tabPlayers = tabPlayers;
+	}
+	
+	/**
+	 *   Setter of all TwixtPlayers
+	 *
+	 *   @param player1 First player
+	 *   @param player2 Second player
+	 */
+	public void setPlayers(Player player1, Player player2)
+	{
+		Player[] tabPlayers = {player1, player2};
 		this.tabPlayers = tabPlayers;
 	}
 
@@ -156,12 +169,27 @@ public class RunningGame extends Thread
 		} while (logicManager.getStatus() == 0);
 
 		/* End of the game */
+		int whatsNext = 0;
 		if (logicManager.getStatus() < 0 )
 		{
-			displayManager.drawMessage();
+			whatsNext = displayManager.drawMessage();
 		}
 		else {
-			displayManager.wonMessage(idx_cur_player+1, getPlayer(idx_cur_player));
+			whatsNext = displayManager.wonMessage(idx_cur_player+1, getPlayer(idx_cur_player));
+		}
+		// Switch
+		if (whatsNext == 1) {
+			Player tmp = tabPlayers[0];
+			tabPlayers[0] = tabPlayers[1]; 
+			tabPlayers[1] = tmp;
+			displayManager.switchPlayers();
+		}
+		// Switch or restart
+		if (whatsNext < 2) {
+			logicManager.reinit();
+			RunningGame runningGame = new RunningGame(logicManager, displayManager);
+			runningGame.setPlayers(tabPlayers);
+			runningGame.start();
 		}
 	}
 }

@@ -63,6 +63,10 @@ public abstract class AbstractAI implements Player {
 		return name;
 	}
 	
+	public final void setName(String newName) {
+		name = newName;
+	}
+	
 	
 	/**
 	 * Return the currently saved move

@@ -37,7 +37,7 @@ public class GameFrame extends JFrame  implements Player, Display
     }
     
     
-    private void init() {		
+    private void init() {
 		setTitle(Constants.gameTitle);
 		setBackground(Constants.menuColor);
 		setLayout(new BorderLayout());
@@ -76,26 +76,38 @@ public class GameFrame extends JFrame  implements Player, Display
         boardPanel.addPoint(p);
 	}
 
-	public void wonMessage(int playerIndex, Player player)
+	@Override
+	public void switchPlayers() {
+		menuPanel.switchPlayers();
+	}
+
+	public int wonMessage(int playerIndex, Player player)
 	{
-			JOptionPane.showMessageDialog(this, "<html><h1><b>" + player.getName() + " (player " + playerIndex + ")</b> wins!</h1></html>",
-										  Constants.gameTitle, JOptionPane.INFORMATION_MESSAGE);
+		String[] choices = {"Restart", "Switch", "OK"};
+		int chosen = JOptionPane.showOptionDialog(this,
+				"<html><h1><b>" + player.getName() + " (player " + playerIndex + ")</b> wins!</h1></html>",
+				Constants.gameTitle, JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, choices,
+				choices[2]);
 		boardPanel.setEnabled(false);
+		return chosen;
 	}
 
 	
 
-	public void drawMessage()
+	public int drawMessage()
 	{
-		JOptionPane.showMessageDialog(this, "<html><h1>Draw game!</h1><html>",
-									  Constants.gameTitle, JOptionPane.INFORMATION_MESSAGE);
+		String[] choices = {"Restart", "Switch", "OK"};
+		int chosen = JOptionPane.showOptionDialog(this,
+				"<html><h1>Draw game!</h1></html>",
+				Constants.gameTitle, JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, choices,
+				choices[2]);
 		boardPanel.setEnabled(false);
+		return chosen;
 	}
 
 	public String getName()
 	{
-		int idx_cur_player = (logicManager.getMoves().getPlayer() + 1) % 2;
-		if (idx_cur_player == 0)
+		if (logicManager.getMoves().getPlayer() == 0)
 		{
 			return menuPanel.p1Name;
 		}
@@ -104,6 +116,10 @@ public class GameFrame extends JFrame  implements Player, Display
 			return menuPanel.p2Name;
 		}
 	}
+	
+	public void setName(String newName) {
+		// Nothing
+	}
 
 
 	public void getMove(LogicManager logicManager, SaveMove save)
@@ -111,5 +127,8 @@ public class GameFrame extends JFrame  implements Player, Display
 		boardPanel.getMove(save);
 	}
 
+	public LogicManager getLogicManager() {
+		return logicManager;
+	}
 	
 }
