@@ -131,7 +131,7 @@ public class RunningGame extends Thread
 			SaveMove save = new SaveMove();
 			idx_cur_player= logicManager.getMoves().getTurn();
 			Player cur_player = tabPlayers[idx_cur_player];
-			forceThreadStop();
+
 			try
 			{
 				/* AI player */
@@ -143,6 +143,7 @@ public class RunningGame extends Thread
 					{
 						executor.shutdownNow();
 					}
+					forceThreadStop();
 				}
 				/* Human player */
 				else
