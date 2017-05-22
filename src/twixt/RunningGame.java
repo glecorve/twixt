@@ -1,7 +1,13 @@
 package twixt;
 
 import logic.*;
+
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import ai.AbstractAI;
 import ai.RandomAI;
 
@@ -101,6 +107,16 @@ public class RunningGame extends Thread
 	{
 		this.delay = delay;
 	}
+	
+	private void forceThreadStop() {
+		Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
+		Pattern p = Pattern.compile("^pool-[0-9]+-thread-[0-9]+$");
+		for (Thread t : threadSet) {
+			if (p.matcher(t.getName()).matches()) {
+				t.stop();
+			}
+		}
+	}
 
 	/**
 	 *  Twixt game run method (thread specific)
@@ -115,6 +131,7 @@ public class RunningGame extends Thread
 			SaveMove save = new SaveMove();
 			idx_cur_player= logicManager.getMoves().getTurn();
 			Player cur_player = tabPlayers[idx_cur_player];
+			forceThreadStop();
 			try
 			{
 				/* AI player */
